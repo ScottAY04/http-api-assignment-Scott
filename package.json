@@ -1,0 +1,16 @@
+{
+  "name": "api-assignment",
+  "version": "1.0.0",
+  "description": "homework for 430",
+  "main": "eslint.config.js",
+  "scripts": {
+    "start": "node ./src/server.js",
+    "pretest": "eslint ./src --fix",
+    "test": "Test Complete"
+  },
+  "author": "Scott Au Yeung",
+  "license": "UNLICENSED",
+  "devDependencies": {
+    "eslint": "^9.39.2"
+  }
+}
