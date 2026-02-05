@@ -5,20 +5,96 @@
   <link rel="stylesheet" type="text/css" href="/style.css">
   
   <script>
+    const handleResponse = async (response, parsedResponse) => {
 
+      const content = document.querySelector("#content");
+
+      switch(response.status){
+        //success
+        case 200: 
+          content.innerHTML = `<b>Success</b>`;
+          content.innerHTML += `<p>Message: This is a successful response</p>`;
+          break;
+
+        //bad request
+        case 400: 
+          content.innerHTML = `<b>Bad Request</b>`;
+          content.innerHTML += `<p>Message: Missing valid query parameter set to true</p>`;
+          break;
+
+        //unauthorized
+        case 401:
+          content.innerHTML = `<b>Unauthorized</b>`;
+          content.innerHTML += `<p>Message: Missing loggedIn query parameter set to yes</p>`;
+          break;
+
+        //forbidden
+        case 403:
+          content.innerHTML = `<b>Forbidden</b>`;
+          content.innerHTML += `<p>Message: You do not have access to this content</p>`;
+          break;
+
+        //not found
+        case 404:
+          content.innerHTML = `<b>Resource Not Found</b>`;
+          content.innerHTML += `<p>Message: The page you are looking for was not found</p>`;
+          break;
+
+        //Internal
+        case 500:
+          content.innerHTML = `<b>Internal Server Error</b>`;
+          content.innerHTML += `<p>Message: Internal Server Error. Something went wrong.</p>`;
+          break;
+
+        //Not Implemented
+        case 501:
+          content.innerHTML = `<b>Not Implemented</b>`;
+          content.innerHTML += `<p>Message: A get request for this page has not been implemented yet. 
+            Check again later for updated content</p>`;
+          break;
+
+        //no error code
+        default: 
+          content.innerHTML = `Error code not implemented by client.`;
+          break;
+      }
+
+      if(parsedResponse){
+        let obj = await response.json;
+
+        let jsonString = JSON.stringify(obj);
+        content.innerHTML += `<p>${jsonString}</p>`
+      }
+      else{
+        content.innerHTML += '<p>Meta Date Received</p>'
+      }
+    };
+
+    const requestUpdate = async (userForm) => {
+        const url = userForm.querySelector('urlField').value;
+        const method = userForm.querySelector('#methodSelect').value;
+
+        let response = await fetch(url, {
+          method, 
+          headers:{
+            'Accept': application/json,
+            'Accept': application/xml,
+          }
+        })
+      }
   </script>
 </head>
 <body>
   <section id="top">
     <h3>Status Code Tests</h3>
     <select id="page">
-      <option value="/success">Success</option>
-      <option value="/badRequest">Bad Request</option>
-      <option value="/unauthorized">Unauthorized</option>
-      <option value="/forbidden">Forbidden</option>
-      <option value="/internal">Internal</option>
-      <option value="/notImplemented">Not Implemented</option>
-      <option value="/notFound">Not Found</option>
+      <option value="/success">Success</option> <!-- 200 -->
+      <option value="/badRequest">Bad Request</option> <!-- 400 -->
+      <option value="/unauthorized">Unauthorized</option> <!-- 401 -->
+      <option value="/forbidden">Forbidden</option> <!-- 403 -->
+      <option value="/internal">Internal</option> <!-- 500 -->
+      <option value="/notImplemented">Not Implemented</option> <!-- 501 -->
+      <option value="/notFound">Not Found</option> <!-- 404 -->
     </select>
     <select id="type">
       <option value="application/json">JSON</option>
