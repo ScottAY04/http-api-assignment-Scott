@@ -11,6 +11,9 @@ const respondData = (request, response, status, object, type) => {
     }else if(type === "application/json"){
       objMes += content;
     }
+    else{
+      objMes += content;
+    }
 
     //header related stuff
     const headers = {
